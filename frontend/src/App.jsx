@@ -111,7 +111,7 @@ function App() {
         </ul>
 
         <button onClick={summarize} style={styles.summarizeButton}>
-          Summarize & Send to Slack
+          Summarize
         </button>
 
         {/* Modal popup */}
