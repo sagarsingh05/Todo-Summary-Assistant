@@ -42,6 +42,21 @@ exports.deleteTodo = async (req, res) => {
   res.sendStatus(204);
 };
 
+exports.updateTodo = async (req, res) => {
+  const { id } = req.params;
+  const { title } = req.body;
+
+  const { error } = await supabase
+    .from('todos')
+    .update({ title })
+    .eq('id', id);
+
+  if (error) return res.status(500).json({ error: error.message });
+
+  res.status(200).json({ message: "Todo updated successfully." });
+};
+
+
 exports.summarizeTodos = async (req, res) => {
   try {
     const { data: todos, error: fetchError } = await supabase.from('todos').select();

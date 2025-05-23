@@ -3,7 +3,7 @@ import axios from 'axios';
 
 const API = import.meta.env.VITE_API_URL;
 
-function Modal({ title, message, onClose }) {
+function Modal({ title, message, onClose, isEdit, editInput, setEditInput, onSave }) {
   return (
     <div style={modalStyles.overlay}>
       <div style={modalStyles.modal}>
@@ -14,16 +14,33 @@ function Modal({ title, message, onClose }) {
           </button>
         </div>
         <div style={modalStyles.body}>
-          <p>{message}</p>
+          {isEdit ? (
+            <>
+              <input
+                type="text"
+                value={editInput}
+                onChange={(e) => setEditInput(e.target.value)}
+                style={styles.input}
+              />
+              <button onClick={onSave} style={{ ...styles.addButton, marginTop: '1rem' }}>
+                Save
+              </button>
+            </>
+          ) : (
+            <p>{message}</p>
+          )}
         </div>
       </div>
     </div>
   );
 }
 
+
 function App() {
   const [todos, setTodos] = useState([]);
   const [input, setInput] = useState('');
+  const [editTodo, setEditTodo] = useState(null);
+  const [editInput, setEditInput] = useState('');
   const [message, setMessage] = useState('');
   const [showModal, setShowModal] = useState(false);
 
@@ -77,10 +94,32 @@ function App() {
     }
   };
 
-  const closeModal = () => {
+  const openEditModal = (todo) => {
+  setEditTodo(todo);
+  setEditInput(todo.title);
+  setShowModal(true);
+};
+
+const updateTodo = async () => {
+  try {
+    await axios.put(`${API}/todos/${editTodo.id}`, { title: editInput });
+    setEditTodo(null);
+    setEditInput('');
     setShowModal(false);
-    setMessage('');
-  };
+    fetchTodos();
+  } catch (err) {
+    console.error("Update failed:", err);
+    setMessage("Couldn't update todo.");
+  }
+};
+
+const closeModal = () => {
+  setShowModal(false);
+  setMessage('');
+  setEditTodo(null);
+  setEditInput('');
+};
+
 
   return (
     <div style={styles.wrapper}>
@@ -99,25 +138,40 @@ function App() {
           </button>
         </div>
 
-        <ul style={styles.todoList}>
-          {todos.map((todo) => (
-            <li key={todo.id} style={styles.todoItem}>
-              <span>{todo.title}</span>
-              <button onClick={() => deleteTodo(todo.id)} style={styles.deleteButton}>
-                ✕
-              </button>
-            </li>
-          ))}
-        </ul>
+<ul style={styles.todoList}>
+  {todos.map((todo) => (
+    <li key={todo.id} style={styles.todoItem}>
+      <span>{todo.title}</span>
+      <div style={{ display: 'flex', gap: '0.5rem' }}>
+        <button onClick={() => openEditModal(todo)} style={styles.editButton}>
+          ✎
+        </button>
+        <button onClick={() => deleteTodo(todo.id)} style={styles.deleteButton}>
+          ✕
+        </button>
+      </div>
+    </li>
+  ))}
+</ul>
+
 
         <button onClick={summarize} style={styles.summarizeButton}>
           Summarize
         </button>
 
-        {/* Modal popup */}
-        {showModal && (
-          <Modal title="Slack Status" message={message} onClose={closeModal} />
-        )}
+
+{showModal && (
+  <Modal
+    title={editTodo ? "Edit Todo" : "Status"}
+    message={message}
+    onClose={closeModal}
+    isEdit={!!editTodo}
+    editInput={editInput}
+    setEditInput={setEditInput}
+    onSave={updateTodo}
+  />
+)}
+
       </div>
     </div>
   );
@@ -134,7 +188,7 @@ const modalStyles = {
     zIndex: 1000,
   },
   modal: {
-    backgroundColor: '#fef3c7',
+    backgroundColor: '#fff',
     borderRadius: '10px',
     width: '90%',
     maxWidth: '400px',
@@ -142,7 +196,7 @@ const modalStyles = {
     overflow: 'hidden',
   },
   header: {
-    backgroundColor: '#d97706',
+    backgroundColor: '#3730a3',
     padding: '1rem',
     display: 'flex',
     justifyContent: 'space-between',
@@ -234,7 +288,7 @@ const styles = {
   summarizeButton: {
     width: '100%',
     padding: '0.75rem',
-    backgroundColor: '#166534',
+    backgroundColor: '#3730a3',
     color: 'white',
     fontWeight: '500',
     border: 'none',
@@ -242,6 +296,16 @@ const styles = {
     cursor: 'pointer',
     fontSize: '1rem',
   },
+
+  editButton: {
+  color: '#1e40af', // blue
+  fontWeight: 'bold',
+  border: 'none',
+  background: 'none',
+  fontSize: '1rem',
+  cursor: 'pointer',
+}
+
 };
 
 export default App;
