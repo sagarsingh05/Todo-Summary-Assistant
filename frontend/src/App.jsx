@@ -146,7 +146,7 @@ const closeModal = () => {
         <button onClick={() => openEditModal(todo)} style={styles.editButton}>
           ✎
         </button>
-        <button onClick={() => deleteTodo(todo.id)} style={styles.deleteButton}>
+        <button  onClick={() => deleteTodo(todo.id)} style={styles.deleteButton}>
           ✕
         </button>
       </div>
