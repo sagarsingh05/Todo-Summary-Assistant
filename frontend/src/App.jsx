@@ -298,7 +298,7 @@ const styles = {
   },
 
   editButton: {
-  color: '#1e40af', // blue
+  color: '#1e40af',
   fontWeight: 'bold',
   border: 'none',
   background: 'none',
