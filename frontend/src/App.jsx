@@ -20,9 +20,9 @@ function Modal({ title, message, onClose, isEdit, editInput, setEditInput, onSav
                 type="text"
                 value={editInput}
                 onChange={(e) => setEditInput(e.target.value)}
-                style={styles.input}
+                style={{...styles.input,  marginLeft: '15px', backgroundColor: '#fff', }}
               />
-              <button onClick={onSave} style={{ ...styles.addButton, marginTop: '1rem', marginLeft: '75px' }}>
+              <button onClick={onSave} style={{ ...styles.addButton, marginTop: '1rem', marginBottom: '15px', marginLeft: '80px' }}>
                 Save
               </button>
             </>
@@ -194,6 +194,10 @@ const modalStyles = {
     maxWidth: '400px',
     boxShadow: '0 8px 20px rgba(0,0,0,0.25)',
     overflow: 'hidden',
+    display: 'flex',
+    justifyContent: 'space-between',
+    flexDirection: 'column',
+    
   },
   header: {
     backgroundColor: '#3730a3',
@@ -251,7 +255,7 @@ const styles = {
     marginBottom: '1.5rem',
   },
   input: {
-    flex: 1,
+    flex: '1',
     padding: '0.65rem',
     fontSize: '1rem',
     borderRadius: '6px',
