@@ -22,7 +22,7 @@ function Modal({ title, message, onClose, isEdit, editInput, setEditInput, onSav
                 onChange={(e) => setEditInput(e.target.value)}
                 style={styles.input}
               />
-              <button onClick={onSave} style={{ ...styles.addButton, marginTop: '1rem' }}>
+              <button onClick={onSave} style={{ ...styles.addButton, marginTop: '1rem', marginLeft: '75px' }}>
                 Save
               </button>
             </>
