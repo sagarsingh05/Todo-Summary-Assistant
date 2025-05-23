@@ -211,19 +211,22 @@ const modalStyles = {
     fontWeight: 'bold',
   },
   body: {
-    padding: '1rem',
     color: '#78350f', 
     fontWeight: '600',
     fontSize: '1.1rem',
+    margin : '0px'
   },
 };
 
 const styles = {
   wrapper: {
     backgroundColor: '#cbd5e1',
-    minHeight: '100vh',
-    padding: '2rem',
+    height: '100vh',
     fontFamily: 'Segoe UI, sans-serif',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    margin: '0px'
   },
   container: {
     maxWidth: '600px',
@@ -232,6 +235,8 @@ const styles = {
     padding: '2rem',
     borderRadius: '10px',
     boxShadow: '0 4px 14px rgba(0,0,0,0.12)',
+    display: 'flex',
+    flexDirection: 'column',
   },
   title: {
     textAlign: 'center',
@@ -260,7 +265,7 @@ const styles = {
     fontWeight: '500',
     border: 'none',
     borderRadius: '6px',
-    cursor: 'pointer',
+    cursor: 'pointer'
   },
   todoList: {
     listStyle: 'none',
